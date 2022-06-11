@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -68,20 +69,16 @@ public class SatelliteController {
 	public String save(@Valid @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs,Model model) {
 		
-		String errorCodeData = "Impossibile che la data di rientro sia prima della data di lancio";
-		String errorCodeStato = "Impossibile che un satellite in orbita abbia una data di rientro";
-		
 		if(satellite.getDataRientro() != null)
 			if(satellite.getDataRientro().before(satellite.getDataLancio())) {
-				model.addAttribute("messageData", errorCodeData);
+				result.rejectValue("dataRientro","dataLancio", "la data di rientro non può essere antecedente alla data di lancio.");
 				return "satellite/insert";
-				
 			}
 		
 		if(satellite.getDataRientro() != null) 
 				if(satellite.getStato().equals(satellite.getStato().FISSO) 
 				|| satellite.getStato().equals(satellite.getStato().IN_MOVIMENTO)) {
-					model.addAttribute("messageStato", errorCodeStato);
+					result.rejectValue("dataRientro","stato", "la data di rientro non può esistere se satellite ancora in orbita");
 					return "satellite/insert";
 				}
 		
@@ -112,7 +109,11 @@ public class SatelliteController {
 				.equals(satelliteService.caricaSingoloElemento(idSatelliteDaEliminare).getStato().DISATTIVATO)) {
 			model.addAttribute("messageError",errorCode);
 			return "satellite/delete";
+//			result.rejectValue("dataRientro","impossibile eliminare satellite ancora in orbita.");
+//			result.rejectValue("stato", "impossibile eliminare satellite ancora in orbita.");
+//			return "satellite/delete";
 		}
+		
 		
 		satelliteService.rimuovi(idSatelliteDaEliminare);
 		
@@ -129,21 +130,17 @@ public class SatelliteController {
 	@PostMapping("/update")
 	public String update(@Valid @ModelAttribute("edit_satellite_attr") Satellite satellite, BindingResult result,
 			RedirectAttributes redirectAttrs,Model model) {
-
-		String errorCodeData = "Impossibile che la data di rientro sia prima della data di lancio";
-		String errorCodeStato = "Impossibile che un satellite in orbita abbia una data di rientro";
 		
 		if(satellite.getDataRientro() != null)
 			if(satellite.getDataRientro().before(satellite.getDataLancio())) {
-				model.addAttribute("messageData", errorCodeData);
+				result.rejectValue("dataRientro","dataLancio", "la data di rientro non può essere antecedente alla data di lancio.");
 				return "satellite/edit";
-				
 			}
 		
 		if(satellite.getDataRientro() != null) 
 				if(satellite.getStato().equals(satellite.getStato().FISSO) 
 				|| satellite.getStato().equals(satellite.getStato().IN_MOVIMENTO)) {
-					model.addAttribute("messageStato", errorCodeStato);
+					result.rejectValue("dataRientro","stato", "la data di rientro non può esistere se satellite ancora in orbita");
 					return "satellite/edit";
 				}
 		

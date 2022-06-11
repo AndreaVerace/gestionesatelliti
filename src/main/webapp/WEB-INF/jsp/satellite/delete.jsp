@@ -56,11 +56,13 @@
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Data di Rientro:</dt>
 							  <dd class="col-sm-9"><fmt:formatDate type="date" value = "${delete_satellite_attr.dataRientro}" /></dd>
+							  <form:errors  path="dataRientro" cssClass="error_field" />
 					    	</dl>
 					    	
 					    	<dl class="row">
 							  <dt class="col-sm-3 text-right">Stato :</dt>
 							  <dd class="col-sm-9">${delete_satellite_attr.stato}</dd>
+							  <form:errors  path="stato" cssClass="error_field" />
 					    	</dl>
 					    	
 					    	<form:form  method="post" action="${pageContext.request.contextPath}/satellite/remove" class="row g-3" novalidate="novalidate">
