@@ -1,6 +1,9 @@
 package it.prova.gestionesatelliti.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.criteria.Predicate;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.prova.gestionesatelliti.model.Satellite;
+import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.repository.SatelliteRepository;
 
 @Service
@@ -79,6 +83,21 @@ public class SatelliteServiceImpl implements SatelliteService {
 		};
 
 		return satelliteRepository.findAll(specificationCriteria);
+	}
+
+	@Override
+	public List<Satellite> FindAllByDataLancioBeforeAndStatoNotLike(Date data, StatoSatellite stato) throws ParseException {
+		return satelliteRepository.findAllByDataLancioBeforeAndStatoNotLike(data,stato);
+	}
+
+	@Override
+	public List<Satellite> FindAllByDataRientroIsNullAndStatoLike(StatoSatellite stato) throws ParseException{
+		return satelliteRepository.findAllByDataRientroIsNullAndStatoLike(stato);
+	}
+
+	@Override
+	public List<Satellite> FindAllByDataLancioBeforeAndStatoLike(Date data, StatoSatellite stato) throws ParseException {
+		return satelliteRepository.findAllByDataLancioBeforeAndStatoLike(data,stato);
 	}
 
 }

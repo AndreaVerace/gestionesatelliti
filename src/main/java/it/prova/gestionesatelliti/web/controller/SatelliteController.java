@@ -1,5 +1,7 @@
 package it.prova.gestionesatelliti.web.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,7 +28,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.prova.gestionesatelliti.model.Satellite;
 import it.prova.gestionesatelliti.model.StatoSatellite;
 import it.prova.gestionesatelliti.service.SatelliteService;
-import it.prova.gestionesatelliti.validations.Validazioni;
 
 @Controller
 @RequestMapping(value = "/satellite")
@@ -201,4 +202,26 @@ public class SatelliteController {
 		 redirectAttrs.addFlashAttribute("successMessage", "Operazione eseguita correttamente");
 			return "redirect:/satellite";
 	}
+	
+	@GetMapping("/listLanciatiNonDisattivatiServlet")
+	public String listLanciatiNonDisattivati(Model model) throws ParseException {
+		List<Satellite> results = satelliteService.FindAllByDataLancioBeforeAndStatoNotLike(new SimpleDateFormat("yyyy-MM-dd").parse("2020-06-11"), StatoSatellite.DISATTIVATO);
+		model.addAttribute("satellite_listLanciatiNonDisattivati_attribute", results);
+		return "satellite/listLanciatiNonDisattivati";
+	}
+	
+	@GetMapping("/listDisattivatiNonRientratiServlet")
+	public String listDisattivatiNonRientrati(Model model) throws ParseException {
+		List<Satellite> results = satelliteService.FindAllByDataRientroIsNullAndStatoLike(StatoSatellite.DISATTIVATO);
+		model.addAttribute("satellite_listDisattivatiNonRientrati_attribute", results);
+		return "satellite/listDisattivatiNonRientrati";
+	}
+	
+	@GetMapping("/listOrbitaFissiServlet")
+	public String listOrbitaFissi(Model model) throws ParseException {
+		List<Satellite> results = satelliteService.FindAllByDataLancioBeforeAndStatoLike(new SimpleDateFormat("yyyy-MM-dd").parse("2012-06-11"),StatoSatellite.FISSO);
+		model.addAttribute("satellite_listOrbitaFissi_attribute", results);
+		return "satellite/listOrbitaFissi";
+	}
+	
 }
