@@ -67,7 +67,7 @@ public class SatelliteController {
 
 	@PostMapping("/save")
 	public String save(@Valid @ModelAttribute("insert_satellite_attr") Satellite satellite, BindingResult result,
-			RedirectAttributes redirectAttrs,Model model) {
+			RedirectAttributes redirectAttrs) {
 		
 		if(satellite.getDataRientro() != null)
 			if(satellite.getDataRientro().before(satellite.getDataLancio())) {
@@ -104,7 +104,7 @@ public class SatelliteController {
 		
 		String errorCode = "Impossibile eliminare satellite che è ancora in orbita.";
 		
-		if(satelliteService.caricaSingoloElemento(idSatelliteDaEliminare).getDataRientro() == null 
+		if(satelliteService.caricaSingoloElemento(idSatelliteDaEliminare).getDataRientro() == null
 				|| !satelliteService.caricaSingoloElemento(idSatelliteDaEliminare).getStato()
 				.equals(satelliteService.caricaSingoloElemento(idSatelliteDaEliminare).getStato().DISATTIVATO)) {
 			model.addAttribute("messageError",errorCode);

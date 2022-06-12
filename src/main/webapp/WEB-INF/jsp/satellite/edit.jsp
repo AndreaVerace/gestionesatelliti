@@ -86,7 +86,7 @@
 							
 								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${edit_satellite_attr.dataLancio}' />
 								<div class="col-md-3">
-									<label for="dataLancio" class="form-label">Data di Lancio <span class="text-danger">*</span></label>
+									<label for="dataLancio" class="form-label">Data di Lancio </label>
                         			<spring:bind path="dataLancio">
 	                        		<input class="form-control ${status.error ? 'is-invalid' : ''}" id="dataLancio" type="date" placeholder="dd/MM/yy"
 	                            		title="formato : gg/mm/aaaa"  name="dataLancio" required 
@@ -97,7 +97,7 @@
 								
 								<fmt:formatDate pattern='yyyy-MM-dd' var="parsedDate" type='date' value='${edit_satellite_attr.dataRientro}' />
 								<div class="col-md-3">
-									<label for="dataRientro" class="form-label">Data di Rientro <span class="text-danger">*</span></label>
+									<label for="dataRientro" class="form-label">Data di Rientro </label>
                         			<spring:bind path="dataRientro">
 	                        		<input class="form-control ${status.error ? 'is-invalid' : ''}" id="dataRientro" type="date" placeholder="dd/MM/yy"
 	                            		title="formato : gg/mm/aaaa"  name="dataRientro" required 
